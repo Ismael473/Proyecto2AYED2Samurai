@@ -26,12 +26,13 @@ private:
     void handlePlaceObstacle(const QJsonObject &json);
     void handleMoveSamuraiA();
     bool isCellWithinObstacleRange(int x, int y, int obsX, int obsY, int range);
-
+    bool isValidPosition(int x, int y);
     SamuraiA samuraiA;
     bool gameStarted;
     std::vector<std::vector<int>> gameMatrix; // Assume a 2D matrix for the game board
     QTcpSocket* clientSocket;
     int koban;  // Moneda para colocar obstáculos
+    void printGameMatrix();
 };
 
 #endif // SERVER_H
