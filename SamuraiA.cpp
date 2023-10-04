@@ -88,11 +88,12 @@ std::pair<int, int> SamuraiA::aStarPathfinding(const std::vector<std::vector<int
                 int newX = currentNode->x + dx;
                 int newY = currentNode->y + dy;
 
+                // Excluir celdas fuera de los límites y con obstáculos
                 if (newX < 0 || newX >= matrix.size() || newY < 0 || newY >= matrix[0].size()) {
                     continue;
                 }
 
-                if (matrix[newX][newY] != 0 || closedSet.find({newX, newY}) != closedSet.end()) {
+                if (matrix[newX][newY] > 0 || closedSet.find({newX, newY}) != closedSet.end()) {
                     continue;
                 }
 
@@ -107,7 +108,6 @@ std::pair<int, int> SamuraiA::aStarPathfinding(const std::vector<std::vector<int
 
     if (currentNode->x == targetX && currentNode->y == targetY) {
         //Sólo nos interesa el siguiente movimiento
-
         while (currentNode->parent && currentNode->parent->parent) {
             currentNode = currentNode->parent;
         }
@@ -117,11 +117,26 @@ std::pair<int, int> SamuraiA::aStarPathfinding(const std::vector<std::vector<int
 
         qDebug() << "Path found. Next Move: " << nextX << ", " << nextY;
 
-        delete startNode; // Limpiamos la memoria
-        return {nextX, nextY};
+        // Cleanup
+        while (startNode) {
+            Node* tmp = startNode;
+            startNode = startNode->parent;
+            delete tmp;
+        }
+
+        // Verificar si la posición sugerida es válida
+        if (matrix[nextX][nextY] == 0) {
+            return {nextX, nextY};
+        }
     }
 
     qDebug() << "No path found. Staying in place.";
-    delete startNode; // Limpiamos la memoria
+    // Cleanup
+    while (startNode) {
+        Node* tmp = startNode;
+        startNode = startNode->parent;
+        delete tmp;
+    }
+
     return {posX, posY}; // Si no se encontró un camino, regresa la posición actual
 }
