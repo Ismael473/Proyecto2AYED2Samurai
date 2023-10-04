@@ -100,7 +100,11 @@ void Server::handlePlaceObstacle(const QJsonObject &json) {
 
     if (koban >= cost) {
         koban -= cost;
-        gameMatrix[y][x] = tipo + 1;
+        gameMatrix[x][y] = tipo + 1;  // Aquí hicimos el cambio
+
+        // Imprime la matriz cada vez que se coloca un obstáculo
+        qDebug() << "Matrix after placing obstacle:";
+        printGameMatrix();
 
         QJsonObject response;
         response["status"] = "success";
@@ -116,27 +120,65 @@ void Server::handlePlaceObstacle(const QJsonObject &json) {
         sendToClient(clientSocket, response);
     }
 }
-
 void Server::handleMoveSamuraiA() {
     int oldX = samuraiA.x();
     int oldY = samuraiA.y();
 
-    // Aquí calculamos la siguiente posición para SamuraiA usando el algoritmo A*
     std::pair<int, int> nextPos = samuraiA.move(gameMatrix);
+    int attempts = 0;
 
-    // Actualizar la posición de SamuraiA
-    samuraiA.setPosition(nextPos.first, nextPos.second);
+    while (!isValidPosition(nextPos.first, nextPos.second) && attempts < 3) {
+        qDebug() << "Obstacle detected at" << nextPos.first << ", " << nextPos.second << ". Recalculating path...";
+        nextPos = samuraiA.move(gameMatrix);
+        attempts++;
+    }
 
-    gameMatrix[oldY][oldX] = 0; // Restablece la posición anterior a 0 (vacío)
-    gameMatrix[samuraiA.y()][samuraiA.x()] = 4; // Cambiado a 4 para que 4 represente al samurai
+    // Verificación adicional justo antes del movimiento
+    if(gameMatrix[nextPos.first][nextPos.second] != 0) {  // Cambiamos el orden aquí
+        qDebug() << "Immediate obstacle check failed. Samurai stays in place.";
+        nextPos = { oldX, oldY };
+    } else {
+        // Actualizar la posición de SamuraiA
+        samuraiA.setPosition(nextPos.first, nextPos.second);
+        gameMatrix[oldX][oldY] = 0;  // Cambiamos el orden aquí
+        gameMatrix[samuraiA.x()][samuraiA.y()] = 4;  // Y aquí también
+    }
+
     QJsonObject response;
     response["status"] = "success";
     response["x"] = samuraiA.x();
     response["y"] = samuraiA.y();
-    response["oldX"] = oldX;  // Agregamos las coordenadas anteriores al JSON
+    response["oldX"] = oldX;
     response["oldY"] = oldY;
-    response["tipo"] = 3;  // Tipo 3 para representar al samurai A
-    qDebug() << "Sending SamuraiA position to client: X =" << samuraiA.x() << ", Y =" << samuraiA.y();
+    response["tipo"] = 3;
+    qDebug() << "Sending SamuraiA position to client: Y =" << samuraiA.x() << ", X =" << samuraiA.y();
     sendToClient(clientSocket, response);
+}
+
+
+bool Server::isValidPosition(int x, int y) {
+    // Verifica si las coordenadas están dentro de los límites de la matriz
+    if (x < 0 || x >= 10 || y < 0 || y >= 10) {
+        return false;
+    }
+
+    // Verifica si la celda en la matriz no contiene un obstáculo
+    // (asumiendo que los valores 1, 2 y 3 son obstáculos)
+    if (gameMatrix[y][x] >= 1 && gameMatrix[y][x] <= 3) {
+        return false;
+    }
+
+    return true;
+}
+
+void Server::printGameMatrix() {
+    for (int i = 0; i < gameMatrix.size(); i++) {
+        QString row;
+        for (int j = 0; j < gameMatrix[i].size(); j++) {
+            row += QString::number(gameMatrix[i][j]) + " ";
+        }
+        qDebug() << row;
+    }
+    qDebug() << "\n";  // Añade una línea en blanco para separar las matrices impresas
 }
 
