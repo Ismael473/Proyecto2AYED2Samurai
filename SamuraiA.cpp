@@ -93,7 +93,7 @@ std::pair<int, int> SamuraiA::aStarPathfinding(const std::vector<std::vector<int
                     continue;
                 }
 
-                if (matrix[newX][newY] > 0 || closedSet.find({newX, newY}) != closedSet.end()) {
+                if (!isTransitable(matrix[newX][newY]) || closedSet.find({newX, newY}) != closedSet.end()) {
                     continue;
                 }
 
@@ -125,7 +125,7 @@ std::pair<int, int> SamuraiA::aStarPathfinding(const std::vector<std::vector<int
         }
 
         // Verificar si la posición sugerida es válida
-        if (matrix[nextX][nextY] == 0) {
+        if (matrix[nextX][nextY] == 0 || matrix[nextX][nextY] == 5 || matrix[nextX][nextY] == 6 || matrix[nextX][nextY] == 7) {
             return {nextX, nextY};
         }
     }
@@ -140,3 +140,8 @@ std::pair<int, int> SamuraiA::aStarPathfinding(const std::vector<std::vector<int
 
     return {posX, posY}; // Si no se encontró un camino, regresa la posición actual
 }
+
+bool SamuraiA::isTransitable(int cellValue) const {
+    return cellValue == 0 || cellValue == 5|| cellValue == 6| cellValue == 7;
+}
+
