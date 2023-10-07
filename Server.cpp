@@ -19,9 +19,9 @@ Server::Server(QObject *parent)
     gameMatrix = std::vector<std::vector<int>>(10, std::vector<int>(10, 0));
 
     // Configurar el timer para iniciar el juego después de 10 segundos
-    QTimer *gameStartTimer = new QTimer(this);
-    connect(gameStartTimer, &QTimer::timeout, this, &Server::startGame);
-    gameStartTimer->start(10000);  // 10 segundos
+    //QTimer *gameStartTimer = new QTimer(this);
+    //connect(gameStartTimer, &QTimer::timeout, this, &Server::startGame);
+    //gameStartTimer->start(10000);  // 10 segundos
 }
 
 bool Server::isCellWithinObstacleRange(int x, int y, int obsX, int obsY, int range) {
@@ -78,14 +78,16 @@ void Server::readFromClient() {
     QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
     QJsonObject json = jsonDoc.object();
 
+    // Siempre permitir la colocación de obstáculos
     if (json.contains("action") && json["action"].toString() == "placeObstacle") {
-        if (!gameStarted) {
-            handlePlaceObstacle(json);
-        }
-    } else if (gameStarted && json.contains("action") && json["action"].toString() == "moveSamuraiA") {
+        handlePlaceObstacle(json);
+    } else if (json.contains("action") && json["action"].toString() == "moveSamuraiA") {
         handleMoveSamuraiA();
+    } else if (json.contains("action") && json["action"].toString() == "moveSamuraiB") {
+    handleMoveSamuraiB();
     }
 }
+
 
 void Server::handlePlaceObstacle(const QJsonObject &json) {
     int x = json["x"].toInt();
@@ -100,9 +102,40 @@ void Server::handlePlaceObstacle(const QJsonObject &json) {
 
     if (koban >= cost) {
         koban -= cost;
-        gameMatrix[x][y] = tipo + 1;  // Aquí hicimos el cambio
 
-        // Imprime la matriz cada vez que se coloca un obstáculo
+        // Establecer el alcance alrededor del obstáculo principal si es tipo Yari
+        if (tipo == 0) {
+            for (int i = x - 1; i <= x + 1; ++i) {
+                for (int j = y - 1; j <= y + 1; ++j) {
+                    if (i >= 0 && i < 10 && j >= 0 && j < 10 && (i != x || j != y)) {
+                        gameMatrix[i][j] = 5;
+                    }
+                }
+            }
+        }
+        // Establecer el alcance de dos celdas alrededor del obstáculo principal si es tipo Arco y flechas
+        else if (tipo == 1) {
+            for (int i = x - 2; i <= x + 2; ++i) {
+                for (int j = y - 2; j <= y + 2; ++j) {
+                    if (i >= 0 && i < 10 && j >= 0 && j < 10 && (i != x || j != y)) {
+                        gameMatrix[i][j] = 6;
+                    }
+                }
+            }
+        }
+        // Establecer el alcance de dos celdas alrededor del obstáculo principal si es tipo Tanegashima
+        else if (tipo == 2) {
+            for (int i = x - 2; i <= x + 2; ++i) {
+                for (int j = y - 2; j <= y + 2; ++j) {
+                    if (i >= 0 && i < 10 && j >= 0 && j < 10 && (i != x || j != y)) {
+                        gameMatrix[i][j] = 7;
+                    }
+                }
+            }
+        }
+
+        gameMatrix[x][y] = tipo + 1;  // Aquí colocamos el obstáculo principal
+
         qDebug() << "Matrix after placing obstacle:";
         printGameMatrix();
 
@@ -120,6 +153,7 @@ void Server::handlePlaceObstacle(const QJsonObject &json) {
         sendToClient(clientSocket, response);
     }
 }
+
 void Server::handleMoveSamuraiA() {
     int oldX = samuraiA.x();
     int oldY = samuraiA.y();
@@ -132,12 +166,17 @@ void Server::handleMoveSamuraiA() {
         nextPos = samuraiA.move(gameMatrix);
         attempts++;
     }
-
+    if ((samuraiA.x() == 9 && samuraiA.y() == 9) || attempts >= 3) {
+        gameMatrix[samuraiA.x()][samuraiA.y()] = 0; // Set Samurai A's current position to 0, making it disappear
+        spawnSamuraiB(); // Spawn Samurai B
+        printGameMatrix();
+        return; // End function early since Samurai A has reached the destination or can't move
+    }
     // Verificación adicional justo antes del movimiento
-    if(gameMatrix[nextPos.first][nextPos.second] != 0) {  // Cambiamos el orden aquí
+    if (gameMatrix[nextPos.first][nextPos.second] == 1 || gameMatrix[nextPos.first][nextPos.second] == 2 || gameMatrix[nextPos.first][nextPos.second] == 3) {
         qDebug() << "Immediate obstacle check failed. Samurai stays in place.";
         nextPos = { oldX, oldY };
-    } else {
+    }else {
         // Actualizar la posición de SamuraiA
         samuraiA.setPosition(nextPos.first, nextPos.second);
         gameMatrix[oldX][oldY] = 0;  // Cambiamos el orden aquí
@@ -151,6 +190,9 @@ void Server::handleMoveSamuraiA() {
     response["oldX"] = oldX;
     response["oldY"] = oldY;
     response["tipo"] = 3;
+    // Imprime la matriz cada vez que se coloca un obstáculo
+    qDebug() << "Matriz actual";
+    printGameMatrix();
     qDebug() << "Sending SamuraiA position to client: Y =" << samuraiA.x() << ", X =" << samuraiA.y();
     sendToClient(clientSocket, response);
 }
@@ -181,4 +223,60 @@ void Server::printGameMatrix() {
     }
     qDebug() << "\n";  // Añade una línea en blanco para separar las matrices impresas
 }
+
+void Server::spawnSamuraiB() {
+    samuraiB.setPosition(0, 0); // Establecer posición inicial para SamuraiB
+    gameMatrix[0][0] = 8;  // Representamos a Samurai B con el valor 8
+
+    // Notificamos al cliente del spawn de SamuraiB
+    QJsonObject response;
+    response["status"] = "success";
+    response["x"] = 0; // Posición inicial x
+    response["y"] = 0; // Posición inicial y
+    response["tipo"] = 8; // tipo para Samurai B
+    sendToClient(clientSocket, response);
+}
+
+void Server::handleMoveSamuraiB() {
+    int oldX = samuraiB.x();
+    int oldY = samuraiB.y();
+
+    std::pair<int, int> nextPos = samuraiB.move(gameMatrix);
+    int attempts = 0;
+
+    while (!isValidPosition(nextPos.first, nextPos.second) && attempts < 3) {
+        qDebug() << "Obstacle detected at" << nextPos.first << ", " << nextPos.second << ". Recalculating path...";
+        nextPos = samuraiB.move(gameMatrix);
+        attempts++;
+    }
+
+    if ((samuraiB.x() == 9 && samuraiB.y() == 9) || attempts >= 3) {
+        gameMatrix[samuraiB.x()][samuraiB.y()] = 0; // Set Samurai B's current position to 0, making it disappear
+        printGameMatrix();
+        return; // End function early since Samurai B has reached the destination or can't move
+    }
+
+    // Verificación adicional justo antes del movimiento
+    if (gameMatrix[nextPos.first][nextPos.second] == 1 || gameMatrix[nextPos.first][nextPos.second] == 2 || gameMatrix[nextPos.first][nextPos.second] == 3) {
+        qDebug() << "Immediate obstacle check failed. SamuraiB stays in place.";
+        nextPos = { oldX, oldY };
+    } else {
+        // Actualizar la posición de SamuraiB
+        samuraiB.setPosition(nextPos.first, nextPos.second);
+        gameMatrix[oldX][oldY] = 0;
+        gameMatrix[samuraiB.x()][samuraiB.y()] = 8;
+    }
+
+    QJsonObject response;
+    response["status"] = "success";
+    response["x"] = samuraiB.x();
+    response["y"] = samuraiB.y();
+    response["oldX"] = oldX;
+    response["oldY"] = oldY;
+    response["tipo"] = 8;
+    printGameMatrix();
+    qDebug() << "Sending SamuraiB position to client: Y =" << samuraiB.x() << ", X =" << samuraiB.y();
+    sendToClient(clientSocket, response);
+}
+
 
