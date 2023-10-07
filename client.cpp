@@ -35,7 +35,7 @@ Client::Client(const QString &hostName, int port, QWidget *parent)
     // Configuración del QTimer para mover el samurai
     moveTimer = new QTimer(this);
     connect(moveTimer, &QTimer::timeout, this, &Client::requestMoveSamuraiA);
-    moveTimer->start(5000); // Inicia el timer para que se ejecute cada 5 segundos
+    moveTimer->start(500); // Inicia el timer para que se ejecute cada 5 segundos
 }
 
 void Client::setupMatrix() {
@@ -101,18 +101,19 @@ void Client::onPlaceObstacle(int x, int y, int tipo) {
 
 void Client::onReadyRead() {
     QByteArray data = socket->readAll();
+    qDebug() << "Data received:" << data;
     QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
     QJsonObject json = jsonDoc.object();
 
     if (json.contains("status")) {
         if (json["status"].toString() == "success") {
-            int x = json["x"].toInt(); // Coordenada x del obstáculo colocado
-            int y = json["y"].toInt(); // Coordenada y del obstáculo colocado
-            int tipo = json["tipo"].toInt(); // Tipo del obstáculo colocado
+            int x = json["x"].toInt(); // Coordenada x
+            int y = json["y"].toInt(); // Coordenada y
+            int tipo = json["tipo"].toInt(); // Tipo
 
             QColor color; // Color que se aplicará al botón
 
-            // Determina el color basado en el tipo de obstáculo
+            // Determina el color basado en el tipo
             switch(tipo) {
             case 0: // Yari
                 color = Qt::green;
@@ -126,23 +127,36 @@ void Client::onReadyRead() {
             case 3: // Samurai A
                 color = Qt::red;
                 break;
+            case 8: // Samurai B
+                qDebug() << "Setting Samurai B color";
+                color = Qt::blue;
+                qDebug() << "Setting Samurai B color";
+                break;
             default:
-                qWarning() << "Tipo de obstáculo desconocido: " << tipo;
-                    return;
+                qWarning() << "Tipo desconocido: " << tipo;
+                return;
             }
 
             // Aplica el color al botón correspondiente
             matrixButtons[x][y]->setStyleSheet("background-color: " + color.name() + ";");
 
+            if(tipo != 3 && tipo != 8) { // Si no es un movimiento de samurai
+                setObstacleRange(x, y, tipo);
+            }
             // Verifica si el movimiento es del samurai y si el JSON incluye las coordenadas antiguas
-            if(tipo == 3 && json.contains("oldX") && json.contains("oldY")) {
+            if((tipo == 3 || tipo == 8) && json.contains("oldX") && json.contains("oldY")) {
                 int oldX = json["oldX"].toInt(); // Coordenada x anterior del samurai
                 int oldY = json["oldY"].toInt(); // Coordenada y anterior del samurai
                 matrixButtons[oldX][oldY]->setStyleSheet("background-color: white;"); // Setea la antigua posición a blanco
+            }// Si Samurai A llega a (9,9), espera 3 segundos antes de cambiar la casilla a blanco
+            if (tipo == 3 && x == 9 && y == 9) {
+                QTimer::singleShot(3000, [this]() {
+                    matrixButtons[9][9]->setStyleSheet("background-color: white;");
+                    moveSamuraiA = false;
+                });
             }
 
-        }
-        else if (json["status"].toString() == "error") {
+        } else if (json["status"].toString() == "error") {
             QString errorString = json["error"].toString();
             qDebug() << "Error colocando el obstáculo:" << errorString;
         }
@@ -154,6 +168,37 @@ void Client::onReadyRead() {
 // Nueva función para enviar la solicitud de movimiento al servidor
 void Client::requestMoveSamuraiA() {
     QJsonObject json;
-    json["action"] = "moveSamuraiA";
+    if (moveSamuraiA) {
+        json["action"] = "moveSamuraiA";
+    } else {
+        json["action"] = "moveSamuraiB";
+    }
     sendToServer(json);
+}
+void Client::setObstacleRange(int x, int y, int tipo) {
+    int range = 0;
+
+    // Determina el rango basado en el tipo de obstáculo
+    switch(tipo) {
+    case 0: // Yari
+        range = 1;
+        break;
+    case 1: // Arco y Flechas
+    case 2: // Tanegashima
+        range = 2;
+        break;
+    default:
+        qWarning() << "Tipo de obstáculo desconocido: " << tipo;
+            return;
+    }
+
+    // Establece el color gris para las celdas dentro del rango
+    for (int i = x - range; i <= x + range; ++i) {
+        for (int j = y - range; j <= y + range; ++j) {
+            // Verifica si las coordenadas están dentro de los límites de la matriz y no son las coordenadas centrales del obstáculo
+            if (i >= 0 && i < matrixButtons.size() && j >= 0 && j < matrixButtons[i].size() && (i != x || j != y)) {
+                matrixButtons[i][j]->setStyleSheet("background-color: gray;");
+            }
+        }
+    }
 }
