@@ -21,6 +21,7 @@ private slots:
     void onButtonClicked();
     void onPlaceObstacle(int x, int y, int tipo);
     void requestMoveSamuraiA();
+    void setObstacleRange(int x, int y, int tipo);
 private:
     int samuraiAX;  // Coordenada X actual del Samurai A
     int samuraiAY;  // Coordenada Y actual del Samurai A
@@ -30,6 +31,7 @@ private:
     QVector<QVector<QPushButton*>> matrixButtons;
     QList<QPushButton*> obstacleButtons;  // Lista para almacenar botones de obstáculos
     int selectedObstacle;
+    bool moveSamuraiA = true;
 };
 
 #endif // CLIENT_H
