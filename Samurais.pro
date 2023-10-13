@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     SamuraiA.cpp \
+    SamuraiB.cpp \
     Server.cpp \
     client.cpp \
     main.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
 
 HEADERS += \
     SamuraiA.h \
+    SamuraiB.h \
     Server.h \
     client.h \
     obstaculo.h
