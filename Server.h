@@ -7,6 +7,7 @@
 #include <QJsonObject>
 #include "SamuraiA.h"
 #include "SamuraiB.h"
+
 class Server : public QTcpServer
 {
     Q_OBJECT

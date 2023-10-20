@@ -31,7 +31,7 @@ CONFIG += c++17
 # Configuración para TagLib con vcpkg
 VCPKG_PATH = C:/vcpkg-master/installed/x64-windows
 INCLUDEPATH += $$VCPKG_PATH/include
-LIBS += -L$$VCPKG_PATH/lib -ltag
+#LIBS += -L$$VCPKG_PATH/lib -ltag
 
 # Copia automática de tag.dll al directorio de salida
 VCPKG_BIN = C:/vcpkg-master/installed/x64-windows/bin

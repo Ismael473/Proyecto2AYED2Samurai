@@ -23,6 +23,7 @@ public:
 private:
     int posX; // Coordenada x actual del SamuraiB
     int posY; // Coordenada y actual del SamuraiB
+    int edad; // Edad del samuraiutilizada para calcular la resistencia
     int resistencia; // Resistencia del SamuraiB (basado en el diseño de SamuraiA)
 
     // Función privada para determinar si una celda es transitable
