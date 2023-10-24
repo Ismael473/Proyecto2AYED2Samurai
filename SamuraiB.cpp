@@ -3,7 +3,10 @@
 #include <vector>
 #include <QDebug>
 
-SamuraiB::SamuraiB() : posX(0), posY(0), resistencia(10) {}
+SamuraiB::SamuraiB() :
+    posX(0),
+    posY(0),
+    resistencia(0) {}
 
 void SamuraiB::setPosition(int x, int y) {
     posX = x;
@@ -20,6 +23,10 @@ int SamuraiB::x() const {
 
 int SamuraiB::y() const {
     return posY;
+}
+
+void SamuraiB::setResistencia() {
+
 }
 
 bool SamuraiB::isTransitable(int cellValue) const {

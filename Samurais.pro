@@ -13,6 +13,7 @@ SOURCES += \
     SamuraiB.cpp \
     Server.cpp \
     client.cpp \
+    genetic.cpp \
     main.cpp \
     obstaculo.cpp
 
@@ -21,6 +22,7 @@ HEADERS += \
     SamuraiB.h \
     Server.h \
     client.h \
+    genetic.h \
     obstaculo.h
 
 FORMS += \

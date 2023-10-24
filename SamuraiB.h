@@ -20,10 +20,22 @@ public:
     // Retorna la coordenada y del SamuraiB
     int y() const;
 
+    // Calcula y asigna la resistencia al samurai
+    void setResistencia();
+
 private:
     int posX; // Coordenada x actual del SamuraiB
     int posY; // Coordenada y actual del SamuraiB
-    int edad; // Edad del samuraiutilizada para calcular la resistencia
+
+    int probSupervivencia;
+    int GenSupervivencia;
+
+    int edad; // Edad del samurai utilizada para calcular la resistencia (20 - 40)
+    int emocional; // Inteligencia emocional del samurai utilizada para calcular la resistencia (0 - 1)
+    int fisica; // Condición física del samurai utilizada para calcular la resistencia (0 - 1)
+    int fSuperior; // Fuerza superior del samurai utilizada para calcular la resistencia (0 - 1)
+    int finferior; // Fuerza inferior utilizada para calcular la resistencia (0 - 1)
+
     int resistencia; // Resistencia del SamuraiB (basado en el diseño de SamuraiA)
 
     // Función privada para determinar si una celda es transitable
