@@ -16,10 +16,10 @@ public:
     int getFitness(char s);
 
 private:
-    int Fitness;    //Aptitud del samurai
+    int Generaciones;   //Cantidad de generaciones antes de detenerse
+    int Aptitud;    //Aptitud del samurai
     SamuraiA SamA;  //Objeto SamuraiA
     SamuraiB SamB;  //Objeto SamuraiB
-
 };
 
 #endif // GENETIC_H

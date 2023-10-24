@@ -6,7 +6,20 @@
 
 class SamuraiB {
 public:
-    SamuraiB(); // Constructor
+    SamuraiB();
+    SamuraiB(int edad,
+             int emocional,
+             int fisica,
+             int fSuperior,
+             int fInferior) {
+
+        this->edad = edad;
+        this->emocional = emocional;
+        this->fisica = fisica;
+        this->fSuperior = fSuperior;
+        this->fInferior = fInferior;
+
+    }; // Constructor
 
     // Setea la posición del SamuraiB en el tablero
     void setPosition(int x, int y);
@@ -34,7 +47,7 @@ private:
     int emocional; // Inteligencia emocional del samurai utilizada para calcular la resistencia (0 - 1)
     int fisica; // Condición física del samurai utilizada para calcular la resistencia (0 - 1)
     int fSuperior; // Fuerza superior del samurai utilizada para calcular la resistencia (0 - 1)
-    int finferior; // Fuerza inferior utilizada para calcular la resistencia (0 - 1)
+    int fInferior; // Fuerza inferior utilizada para calcular la resistencia (0 - 1)
 
     int resistencia; // Resistencia del SamuraiB (basado en el diseño de SamuraiA)
 
