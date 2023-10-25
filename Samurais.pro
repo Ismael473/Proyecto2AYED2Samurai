@@ -15,7 +15,8 @@ SOURCES += \
     client.cpp \
     genetic.cpp \
     main.cpp \
-    obstaculo.cpp
+    obstaculo.cpp \
+    samurai_stats_viewer.cpp
 
 HEADERS += \
     SamuraiA.h \
@@ -23,7 +24,8 @@ HEADERS += \
     Server.h \
     client.h \
     genetic.h \
-    obstaculo.h
+    obstaculo.h \
+    samurai_stats_viewer.h
 
 FORMS += \
     client.ui
