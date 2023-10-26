@@ -18,6 +18,7 @@ private:
     bool isWithinObstacleRange(int x, int y, const std::vector<std::vector<int>>& matrix);
     bool isTransitable(int cellValue) const;
     std::pair<int, int> aStarPathfinding(const std::vector<std::vector<int>>& matrix);
+    void reduceResistencia(int tileValue);
 };
 
 #endif // SAMURAIA_H
