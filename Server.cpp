@@ -2,7 +2,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QTimer>
-
+#include "arduinocontroller.h"
 // Definimos una estructura para el alcance de cada obstáculo
 struct ObstacleInfo {
     int range;
@@ -183,6 +183,16 @@ void Server::handleMoveSamuraiA() {
         gameMatrix[samuraiA.x()][samuraiA.y()] = 4;  // Y aquí también
     }
 
+    if (contadorMovimientos == 3) {
+        contadorAuxiliar++;
+        contadorMovimientos = 0;
+
+        // Imprimir el valor de contadorAuxiliar cuando aumenta
+        qDebug() << "Numero de iteraciones actual:" << contadorAuxiliar;
+        ArduinoController::instance().sendIncrementCommand();
+
+    }
+
     QJsonObject response;
     response["status"] = "success";
     response["x"] = samuraiA.x();
@@ -194,6 +204,8 @@ void Server::handleMoveSamuraiA() {
     qDebug() << "Matriz actual";
     printGameMatrix();
     qDebug() << "Sending SamuraiA position to client: Y =" << samuraiA.x() << ", X =" << samuraiA.y();
+    // Incrementar los contadores
+    contadorMovimientos++;
     sendToClient(clientSocket, response);
 }
 
@@ -267,6 +279,14 @@ void Server::handleMoveSamuraiB() {
         gameMatrix[samuraiB.x()][samuraiB.y()] = 8;
     }
 
+    if (contadorMovimientos == 3) {
+        contadorAuxiliar++;
+        contadorMovimientos = 0;
+
+        // Imprimir el valor de contadorAuxiliar cuando aumenta
+        qDebug() << "Numero de iteraciones actual:" << contadorAuxiliar;
+         ArduinoController::instance().sendIncrementCommand();
+    }
     QJsonObject response;
     response["status"] = "success";
     response["x"] = samuraiB.x();
@@ -276,7 +296,10 @@ void Server::handleMoveSamuraiB() {
     response["tipo"] = 8;
     printGameMatrix();
     qDebug() << "Sending SamuraiB position to client: Y =" << samuraiB.x() << ", X =" << samuraiB.y();
+    // Incrementar los contadores
+    contadorMovimientos++;
     sendToClient(clientSocket, response);
 }
+
 
 
