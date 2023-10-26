@@ -2,6 +2,7 @@
 #include <stack>
 #include <vector>
 #include <QDebug>
+#include "arduinocontroller.h"
 
 SamuraiB::SamuraiB() :
     posX(0),
@@ -11,6 +12,30 @@ SamuraiB::SamuraiB() :
 void SamuraiB::setPosition(int x, int y) {
     posX = x;
     posY = y;
+}
+
+void SamuraiB::setEdad() {
+    edad = 30;
+}
+
+void SamuraiB::setEmocional() {
+    emocional = 0.5;
+}
+
+void SamuraiB::setFisica() {
+    fisica = 0.5;
+}
+
+void SamuraiB::setfSuperior() {
+    fSuperior = 0.5;
+}
+
+void SamuraiB::setfInferior() {
+    fInferior = 0.5;
+}
+
+void SamuraiB::setResistencia() {
+    resistencia = 5 + emocional + fisica + fSuperior + fInferior + ((-1/20) * edad + 2);
 }
 
 std::pair<int, int> SamuraiB::move(const std::vector<std::vector<int>>& gameMatrix) {
@@ -25,8 +50,21 @@ int SamuraiB::y() const {
     return posY;
 }
 
-void SamuraiB::setResistencia() {
-    resistencia = 5 + emocional + fisica + fSuperior + fInferior + ((-1/20) * edad + 2);
+void SamuraiB::reduceResistencia(int obstacleValue) {
+    switch (obstacleValue) {
+    case 5:
+        resistencia -= 1;
+        break;
+    case 6:
+        resistencia -= 2;
+        break;
+    case 7:
+        resistencia -= 4;
+        break;
+    }
+    qDebug() << "Resistencia actual: " << resistencia;
+    // Llamar a sendSoundCommand de ArduinoController aquí:
+    ArduinoController::instance().sendSoundCommand();
 }
 
 bool SamuraiB::isTransitable(int cellValue) const {

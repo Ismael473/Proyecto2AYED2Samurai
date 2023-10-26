@@ -6,23 +6,29 @@
 
 class SamuraiB {
 public:
+    // Constructor
     SamuraiB();
-    SamuraiB(int edad,
-             int emocional,
-             int fisica,
-             int fSuperior,
-             int fInferior) {
-
-        this->edad = edad;
-        this->emocional = emocional;
-        this->fisica = fisica;
-        this->fSuperior = fSuperior;
-        this->fInferior = fInferior;
-
-    } // Constructor
 
     // Setea la posición del SamuraiB en el tablero
     void setPosition(int x, int y);
+
+    // Setea la edad del samurai
+    void setEdad();
+
+    // Setea la inteligencia emocional del samurai
+    void setEmocional();
+
+    // Setea la condicion fisica del samurai
+    void setFisica();
+
+    // Setea la fuerza superior del samurai
+    void setfSuperior();
+
+    // Setea la fuerza inferior del samurai
+    void setfInferior();
+
+    // Calcula y asigna la resistencia al samurai
+    void setResistencia();
 
     // Retorna el siguiente movimiento basado en la matriz del juego proporcionada
     std::pair<int, int> move(const std::vector<std::vector<int>>& gameMatrix);
@@ -33,15 +39,13 @@ public:
     // Retorna la coordenada y del SamuraiB
     int y() const;
 
-    // Calcula y asigna la resistencia al samurai
-    void setResistencia();
-
 private:
-    int posX; // Coordenada x actual del SamuraiB
-    int posY; // Coordenada y actual del SamuraiB
+    int posX, posY; // Coordenadas X y Y actual del SamuraiB
 
     int probSupervivencia;
     int GenSupervivencia;
+
+    int resistencia; // Resistencia del SamuraiB
 
     int edad; // Edad del samurai utilizada para calcular la resistencia (20 - 40)
     int emocional; // Inteligencia emocional del samurai utilizada para calcular la resistencia (0 - 1)
@@ -49,13 +53,14 @@ private:
     int fSuperior; // Fuerza superior del samurai utilizada para calcular la resistencia (0 - 1)
     int fInferior; // Fuerza inferior utilizada para calcular la resistencia (0 - 1)
 
-    int resistencia; // Resistencia del SamuraiB (basado en el diseño de SamuraiA)
-
     // Función privada para determinar si una celda es transitable
     bool isTransitable(int cellValue) const;
 
     // Función privada para la lógica de movimiento usando backtracking
     std::pair<int, int> backtrackingPathfinding(const std::vector<std::vector<int>>& matrix);
+
+    //Funcion privada que reduce la resistencia del samurai al colisionar con un obstaculo
+    void reduceResistencia(int tileValue);
 };
 
 #endif // SAMURAIB_H
