@@ -26,7 +26,7 @@ int SamuraiB::y() const {
 }
 
 void SamuraiB::setResistencia() {
-
+    resistencia = 5 + emocional + fisica + fSuperior + fInferior + ((-1/20) * edad + 2);
 }
 
 bool SamuraiB::isTransitable(int cellValue) const {

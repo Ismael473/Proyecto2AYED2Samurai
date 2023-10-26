@@ -17,7 +17,7 @@ public:
 
 private:
     int Generaciones;   //Cantidad de generaciones antes de detenerse
-    int Aptitud;    //Aptitud del samurai
+    int Aptitud;    //Aptitud del samurai (resistencia)
     SamuraiA SamA;  //Objeto SamuraiA
     SamuraiB SamB;  //Objeto SamuraiB
 };
