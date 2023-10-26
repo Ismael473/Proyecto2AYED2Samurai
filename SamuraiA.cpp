@@ -3,7 +3,7 @@
 #include <set>
 #include <cmath>
 #include <QDebug>
-
+#include "arduinocontroller.h"
 SamuraiA::SamuraiA() : posX(0), posY(0), resistencia(10) {}
 
 void SamuraiA::setPosition(int x, int y) {
@@ -21,6 +21,23 @@ int SamuraiA::x() const {
 
 int SamuraiA::y() const {
     return posY;
+}
+
+void SamuraiA::reduceResistencia(int obstacleValue) {
+    switch (obstacleValue) {
+    case 5:
+        resistencia -= 1;
+        break;
+    case 6:
+        resistencia -= 2;
+        break;
+    case 7:
+        resistencia -= 4;
+        break;
+    }
+    qDebug() << "Resistencia actual: " << resistencia;
+    // Llamar a sendSoundCommand de ArduinoController aquí:
+    ArduinoController::instance().sendSoundCommand();
 }
 
 struct Node {
@@ -124,8 +141,10 @@ std::pair<int, int> SamuraiA::aStarPathfinding(const std::vector<std::vector<int
             delete tmp;
         }
 
-        // Verificar si la posición sugerida es válida
-        if (matrix[nextX][nextY] == 0 || matrix[nextX][nextY] == 5 || matrix[nextX][nextY] == 6 || matrix[nextX][nextY] == 7) {
+        if (matrix[nextX][nextY] == 0) {
+            return {nextX, nextY};
+        } else if (matrix[nextX][nextY] == 5 || matrix[nextX][nextY] == 6 || matrix[nextX][nextY] == 7) {
+            reduceResistencia(matrix[nextX][nextY]);
             return {nextX, nextY};
         }
     }
