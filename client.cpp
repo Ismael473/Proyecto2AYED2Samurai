@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QVBoxLayout>
 #include <QJsonObject>
+#include "samurai_stats_viewer.h"
 
 
 Client::Client(const QString &hostName, int port, QWidget *parent)
@@ -36,6 +37,19 @@ Client::Client(const QString &hostName, int port, QWidget *parent)
     moveTimer = new QTimer(this);
     connect(moveTimer, &QTimer::timeout, this, &Client::requestMoveSamuraiA);
     moveTimer->start(500); // Inicia el timer para que se ejecute cada 5 segundos
+
+
+    /*
+    //Agregar un QTableWidget a la interfaz grafica.
+
+
+    samurai_stats_viewer *samuraiStats = new samurai_stats_viewer(this); //objeto que controla la tabla
+    samuraiStats->setTableWidget(ui->tableWidget);// agragar la Qtable creada al objeto
+
+    // metodo para agregar las stats de los samurais a la tabla.
+    samuraiStats->setNinjaStats("samurai.ID","samurai.edad","Prueba3","Prueba","Prueba","Prueba","Prueba","Prueba","Prueba");
+
+        */
 }
 
 void Client::setupMatrix() {
