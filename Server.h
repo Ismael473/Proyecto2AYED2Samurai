@@ -7,7 +7,6 @@
 #include <QJsonObject>
 #include "SamuraiA.h"
 #include "SamuraiB.h"
-
 class Server : public QTcpServer
 {
     Q_OBJECT
@@ -23,6 +22,8 @@ private slots:
     void startGame();
 
 private:
+    int contadorMovimientos = 0;
+    int contadorAuxiliar = 0;
     void sendToClient(QTcpSocket* socket, const QJsonObject &json);
     void handlePlaceObstacle(const QJsonObject &json);
     void handleMoveSamuraiA();
@@ -42,3 +43,4 @@ private:
 };
 
 #endif // SERVER_H
+
