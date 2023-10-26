@@ -15,6 +15,7 @@ SOURCES += \
     client.cpp \
     genetic.cpp \
     main.cpp \
+    arduinocontroller.cpp \
     obstaculo.cpp \
     samurai_stats_viewer.cpp
 
@@ -24,6 +25,7 @@ HEADERS += \
     Server.h \
     client.h \
     genetic.h \
+    arduinocontroller.h \
     obstaculo.h \
     samurai_stats_viewer.h
 
