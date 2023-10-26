@@ -19,7 +19,7 @@ public:
         this->fSuperior = fSuperior;
         this->fInferior = fInferior;
 
-    }; // Constructor
+    } // Constructor
 
     // Setea la posición del SamuraiB en el tablero
     void setPosition(int x, int y);
