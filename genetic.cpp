@@ -121,9 +121,16 @@ void Genetic::crossover() {
 }
 
 void Genetic::run() {
-    elitism();
+    int i = this->Generaciones;
 
-    crossover();
+    while (i > 0) {
 
-    mutacion();
+        elitism();
+
+        crossover();
+
+        mutacion();
+
+        i--;
+    }
 }
