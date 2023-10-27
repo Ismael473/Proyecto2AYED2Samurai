@@ -24,10 +24,10 @@ public:
     QGraphicsScene *scene;
     QVBoxLayout *stats;
     void setSamuraiStats(QString,QString,QString,QString,QString,QString,QString,QString,QString);
-    void setTableWidget(QTableWidget* tableWidget,
-                        QGraphicsScene *GraficScene,
-                        QGraphicsView *Lienso,
-                        QVBoxLayout *layout);
+    void setTableWidget(QTableWidget*,
+                        QGraphicsScene*,
+                        QGraphicsView*,
+                        QVBoxLayout*t);
 
 
 

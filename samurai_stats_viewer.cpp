@@ -6,7 +6,10 @@ samurai_stats_viewer::samurai_stats_viewer(QObject *parent) : QObject(parent)
 }
 
 
-void samurai_stats_viewer::setTableWidget(QTableWidget* tableWidget){
+void samurai_stats_viewer::setTableWidget(QTableWidget* tableWidget,
+                                          QGraphicsScene *GraficScene,
+                                          QGraphicsView *Lienso,
+                                          QVBoxLayout *layout){
 
     this->Table = tableWidget;
     this->Table->setEditTriggers(QAbstractItemView::NoEditTriggers);

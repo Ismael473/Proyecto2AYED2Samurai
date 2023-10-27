@@ -27,11 +27,13 @@ Client::Client(const QString &hostName, int port, QWidget *parent)
         connect(button, &QPushButton::clicked, this, [=](){ selectedObstacle = i; });
         obstacleLayout->addWidget(button);
     }
-
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    QVBoxLayout *verticalLayout = new QVBoxLayout(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addLayout(obstacleLayout);  // Añade los botones de obstáculo al layout principal
     mainLayout->addLayout(gridLayout);
-    setLayout(mainLayout);
+    verticalLayout->addLayout(mainLayout);
+
+    setLayout(verticalLayout);
 
     // Configuración del QTimer para mover el samurai
     moveTimer = new QTimer(this);
