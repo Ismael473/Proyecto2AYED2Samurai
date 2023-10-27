@@ -57,7 +57,7 @@ void samurai_stats_viewer::setSamuraiStats(QString ID, QString Edad, QString Pro
     QFont fv;
     fv.setPointSize(10);
     peso->setFont(fv);
-    peso->setPos((iter+1)*100,-(iter+1)*100);
+    peso->setPos((iter+1)*100,-(stoi(Resistencia.toUtf8().toStdString()))*50);
     scene->addItem(peso);
     anterior = stoi(Resistencia.toUtf8().toStdString());
     iter = iter+1;
