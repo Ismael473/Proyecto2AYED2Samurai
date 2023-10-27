@@ -41,14 +41,16 @@ Client::Client(const QString &hostName, int port, QWidget *parent)
     samurai_stats_viewer *samuraiStats = new samurai_stats_viewer(this);
     samuraiStats->setTableWidget(tableWidget,GraficScen,Lienso,verticalLayout);
 
-    setLayout(verticalLayout);
-    samuraiStats->setNinjaStats("samurai.ID","samurai.edad","Prueba3","Prueba","Prueba","Prueba","Prueba","Prueba","Prueba");
 
+    samuraiStats->setNinjaStats("samurai.ID","samurai.edad","Prueba3","Prueba","Prueba","Prueba","Prueba","Prueba","Prueba");
+*/
+
+    setLayout(verticalLayout);
     // Configuración del QTimer para mover el samurai
     moveTimer = new QTimer(this);
     connect(moveTimer, &QTimer::timeout, this, &Client::requestMoveSamuraiA);
     moveTimer->start(500); // Inicia el timer para que se ejecute cada 5 segundos
-*/
+
 
     /*
     //Agregar un QTableWidget a la interfaz grafica.
