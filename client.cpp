@@ -37,7 +37,7 @@ Client::Client(const QString &hostName, int port, QWidget *parent)
     QGraphicsScene *GraficScen = new QGraphicsScene;
     QGraphicsView *Lienso = new QGraphicsView;
 
-
+/*
     samurai_stats_viewer *samuraiStats = new samurai_stats_viewer(this);
     samuraiStats->setTableWidget(tableWidget,GraficScen,Lienso,verticalLayout);
 
@@ -48,7 +48,7 @@ Client::Client(const QString &hostName, int port, QWidget *parent)
     moveTimer = new QTimer(this);
     connect(moveTimer, &QTimer::timeout, this, &Client::requestMoveSamuraiA);
     moveTimer->start(500); // Inicia el timer para que se ejecute cada 5 segundos
-
+*/
 
     /*
     //Agregar un QTableWidget a la interfaz grafica.
