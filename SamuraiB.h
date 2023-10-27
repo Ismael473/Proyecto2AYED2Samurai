@@ -13,22 +13,25 @@ public:
     void setPosition(int x, int y);
 
     // Setea la edad del samurai
-    void setEdad();
+    void setEdad(int edad);
 
     // Setea la inteligencia emocional del samurai
-    void setEmocional();
+    void setEmocional(int emocional);
 
     // Setea la condicion fisica del samurai
-    void setFisica();
+    void setFisica(int fisica);
 
     // Setea la fuerza superior del samurai
-    void setfSuperior();
+    void setfSuperior(int fSuperior);
 
     // Setea la fuerza inferior del samurai
-    void setfInferior();
+    void setfInferior(int fInferior);
 
     // Calcula y asigna la resistencia al samurai
-    void setResistencia();
+    void setResistencia(int emocional, int fisica, int fSuperior, int fInferior, int edad);
+
+    // Retorna la resistencia del Samurai
+    int getResistencia();
 
     // Retorna el siguiente movimiento basado en la matriz del juego proporcionada
     std::pair<int, int> move(const std::vector<std::vector<int>>& gameMatrix);

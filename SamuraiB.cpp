@@ -2,6 +2,7 @@
 #include <stack>
 #include <vector>
 #include <QDebug>
+#include <random>
 #include "arduinocontroller.h"
 
 SamuraiB::SamuraiB() :
@@ -14,28 +15,32 @@ void SamuraiB::setPosition(int x, int y) {
     posY = y;
 }
 
-void SamuraiB::setEdad() {
-    edad = 30;
+void SamuraiB::setEdad(int edad) {
+    this->edad = edad;
 }
 
-void SamuraiB::setEmocional() {
-    emocional = 0.5;
+void SamuraiB::setEmocional(int emocional) {
+    this->emocional = emocional;
 }
 
-void SamuraiB::setFisica() {
-    fisica = 0.5;
+void SamuraiB::setFisica(int fisica) {
+    this->fisica = fisica;
 }
 
-void SamuraiB::setfSuperior() {
-    fSuperior = 0.5;
+void SamuraiB::setfSuperior(int fSuperior) {
+    this->fSuperior = fSuperior;
 }
 
-void SamuraiB::setfInferior() {
-    fInferior = 0.5;
+void SamuraiB::setfInferior(int fInferior) {
+    this->fInferior = fInferior;
 }
 
-void SamuraiB::setResistencia() {
-    resistencia = 5 + emocional + fisica + fSuperior + fInferior + ((-1/20) * edad + 2);
+void SamuraiB::setResistencia(int emocional, int fisica, int fSuperior, int fInferior, int edad) {
+    this->resistencia = 5 + emocional + fisica + fSuperior + fInferior + ((-1/20) * edad + 2);
+}
+
+int SamuraiB::getResistencia() {
+    return this->resistencia;
 }
 
 std::pair<int, int> SamuraiB::move(const std::vector<std::vector<int>>& gameMatrix) {

@@ -9,17 +9,28 @@ class genetic
 public:
     genetic();  // Constructor
 
-    //Calcula y guarda la aptitud del samurai
-    void setFitness(char s);
+    void setGeneraciones(int generaciones);
 
-    //Retorna la aptitud del samurai
-    int getFitness(char s);
+    void setAptitudA(int aptitudA);
+
+    void setAptitudB(int aptitudB);
+
+    void setSamuraiA(SamuraiA samuraiA);
+
+    void setSamuraiB(SamuraiB samuraiB);
+
+    void run();
 
 private:
     int Generaciones;   //Cantidad de generaciones antes de detenerse
-    int Aptitud;    //Aptitud del samurai (resistencia)
-    SamuraiA SamA;  //Objeto SamuraiA
-    SamuraiB SamB;  //Objeto SamuraiB
+    SamuraiA samuraiA; //Objeto Samurai A
+    SamuraiB samuraiB; //Objeto Samurai B
+    int AptitudA;   //Aptitud del samuraiA (resistencia)
+    int AptitudB;   //Aptitud del samuraiB (resistencia)
+
+    void elitism(); //Elitismo para decidir mejores generaciones
+    void mutacion(); //Mutacion random del samurai
+    void crossover(); //Crossover random del samurai
 };
 
 #endif // GENETIC_H

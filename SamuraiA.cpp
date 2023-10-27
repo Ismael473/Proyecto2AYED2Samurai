@@ -4,7 +4,10 @@
 #include <cmath>
 #include <QDebug>
 #include "arduinocontroller.h"
-SamuraiA::SamuraiA() : posX(0), posY(0), resistencia(10) {}
+SamuraiA::SamuraiA() :
+    posX(0),
+    posY(0),
+    resistencia(10) {}
 
 void SamuraiA::setPosition(int x, int y) {
     posX = x;
