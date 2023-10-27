@@ -10,6 +10,19 @@ void samurai_stats_viewer::setTableWidget(QTableWidget* tableWidget){
 
     this->Table = tableWidget;
     this->Table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    this->Table->setMinimumWidth(700);
+    this->Table->setMinimumHeight(200);
+
+    Lienso->setMinimumWidth(700);
+    Lienso->setMinimumHeight(200);
+
+    this->scene = GraficScene;
+    Lienso->setScene(this->scene);
+
+    layout->addWidget(this->Table);
+    layout->addWidget(Lienso);
+
+    // cambio
     this->setStatsNames();
 
 }
@@ -33,6 +46,18 @@ void samurai_stats_viewer::setSamuraiStats(QString ID, QString Edad, QString Pro
         this->Table->setItem(row,i,new QTableWidgetItem(atributos.at(i)));
 
     }
+    QGraphicsLineItem *path = new QGraphicsLineItem;
+    path->setLine (iter*100, -anterior*100,(iter+1)*100, -(stoi(Resistencia.toUtf8().toStdString()))*50);
+    scene->addItem(path);
+    
+    QGraphicsSimpleTextItem *peso = new QGraphicsSimpleTextItem(Resistencia);
+    QFont fv;
+    fv.setPointSize(10);
+    peso->setFont(fv);
+    peso->setPos((iter+1)*100,-(iter+1)*100);
+    scene->addItem(peso);
+    anterior = stoi(Resistencia.toUtf8().toStdString());
+    iter = iter+1;
 
 
 }

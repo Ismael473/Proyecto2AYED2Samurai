@@ -3,6 +3,11 @@
 
 #include <QObject>
 #include <QTableWidget>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QVBoxLayout>
+#include <QGraphicsSimpleTextItem>
+#include <QGraphicsLineItem>
 #include <string>
 #include <string.h>
 #include <QString>
@@ -16,8 +21,14 @@ class samurai_stats_viewer : public QObject
 public:
     explicit samurai_stats_viewer(QObject *parent = nullptr);
     QTableWidget *Table;
+    QGraphicsScene *scene;
+    QVBoxLayout *stats;
     void setSamuraiStats(QString,QString,QString,QString,QString,QString,QString,QString,QString);
-    void setTableWidget(QTableWidget*);
+    void setTableWidget(QTableWidget* tableWidget,
+                        QGraphicsScene *GraficScene,
+                        QGraphicsView *Lienso,
+                        QVBoxLayout *layout);
+
 
 
 signals:
@@ -26,6 +37,8 @@ signals:
 private:
     void setStatsNames();
     void insertToTable(QString);
+    int iter = 0;
+    int anterior = 0;
     enum Columna
     {
         IDC,EdadC,ProbabilidadC,GeneracionesC,InteligenciaC,CondicionC,
