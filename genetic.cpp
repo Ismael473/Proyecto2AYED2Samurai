@@ -60,13 +60,54 @@ void Genetic::crossover() {
     int crossoverSamuraiB = rand() % 1 + 5;
 
     if (crossoverSamuraiA == 5) {
-        int crossoverAtribute = rand() % 1 + 5;
-        if (crossoverAtribute == 1) {
+
+        int crossoverAtributeA = rand() % 1 + 5;
+
+        if (crossoverAtributeA == 1) {
             this->samuraiA.setEdad(this->samuraiB.getEdad());
         }
 
+        else if (crossoverAtributeA == 2) {
+            this->samuraiA.setEmocional(this->samuraiB.getEmocional());
+        }
+
+        else if (crossoverAtributeA == 3) {
+            this->samuraiA.setFisica(this->samuraiB.getFisica());
+        }
+
+        else if (crossoverAtributeA == 4) {
+            this->samuraiA.setfSuperior(this->samuraiB.getfSuperior());
+        }
+
+        else {
+            this->samuraiA.setfInferior(this->samuraiB.getfInferior());
+        }
     }
 
+    if (crossoverSamuraiB == 1) {
+
+        int crossoverAtributeB = rand() % 1 + 5;
+
+        if (crossoverAtributeB == 1) {
+            this->samuraiB.setEdad(this->samuraiA.getEdad());
+        }
+
+        else if (crossoverAtributeB == 2) {
+            this->samuraiB.setEmocional(this->samuraiA.getEmocional());
+        }
+
+        else if (crossoverAtributeB == 3) {
+            this->samuraiB.setFisica(this->samuraiA.getFisica());
+        }
+
+        else if (crossoverAtributeB == 4) {
+            this->samuraiB.setfSuperior(this->samuraiA.getfSuperior());
+        }
+
+        else {
+            this->samuraiB.setfInferior(this->samuraiA.getfInferior());
+        }
+    }
 }
 
 void Genetic::run() {

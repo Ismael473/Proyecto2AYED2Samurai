@@ -39,6 +39,26 @@ void SamuraiB::setResistencia(float emocional, float fisica, float fSuperior, fl
     this->resistencia = 5 + emocional + fisica + fSuperior + fInferior + ((-1/20) * edad + 2);
 }
 
+float SamuraiB::getEdad() {
+    return this->edad;
+}
+
+float SamuraiB::getEmocional() {
+    return this->emocional;
+}
+
+float SamuraiB::getFisica() {
+    return this->fisica;
+}
+
+float SamuraiB::getfSuperior() {
+    return this->fSuperior;
+}
+
+float SamuraiB::getfInferior() {
+    return this->fInferior;
+}
+
 float SamuraiB::getResistencia() {
     return this->resistencia;
 }

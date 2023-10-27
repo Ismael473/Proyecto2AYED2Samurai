@@ -40,7 +40,7 @@ public:
     float getFisica();
 
     // Retorna la fuerza superior del samurai
-    float getSuperior();
+    float getfSuperior();
 
     // Retorna la fuerza inferior del samurai
     float getfInferior();
