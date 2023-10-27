@@ -1,4 +1,4 @@
-#include "server.h"
+#include "Server.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QTimer>
@@ -93,7 +93,6 @@ void Server::handlePlaceObstacle(const QJsonObject &json) {
     int x = json["x"].toInt();
     int y = json["y"].toInt();
     int tipo = json["tipo"].toInt();
-
     int cost;
     if (tipo == 0) cost = 10;  // Yari
     else if (tipo == 1) cost = 15;  // Arco y flechas
@@ -138,9 +137,9 @@ void Server::handlePlaceObstacle(const QJsonObject &json) {
 
         qDebug() << "Matrix after placing obstacle:";
         printGameMatrix();
-
         QJsonObject response;
         response["status"] = "success";
+        //para el movimiento por iteracion
         response["x"] = x;
         response["y"] = y;
         response["tipo"] = tipo;
@@ -152,9 +151,23 @@ void Server::handlePlaceObstacle(const QJsonObject &json) {
         response["error"] = "Not enough koban";
         sendToClient(clientSocket, response);
     }
+
 }
 
+
+void Server::moveObstacles(const QJsonObject &json) {
+    int x = json["x"].toInt()+1;
+    int y = json["y"].toInt()+1;
+    QJsonObject response;
+    response["x"]=x;
+    response["y"]=y;
+}
+
+
 void Server::handleMoveSamuraiA() {
+
+
+
     int oldX = samuraiA.x();
     int oldY = samuraiA.y();
 
@@ -183,9 +196,14 @@ void Server::handleMoveSamuraiA() {
         gameMatrix[samuraiA.x()][samuraiA.y()] = 4;  // Y aquí también
     }
 
-    if (contadorMovimientos == 3) {
+    if (contadorMovimientos == 3) { // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        const QJsonObject json;
+        moveObstacles(json);
         contadorAuxiliar++;
         contadorMovimientos = 0;
+
+
 
         // Imprimir el valor de contadorAuxiliar cuando aumenta
         qDebug() << "Numero de iteraciones actual:" << contadorAuxiliar;
@@ -283,6 +301,8 @@ void Server::handleMoveSamuraiB() {
     }
 
     if (contadorMovimientos == 3) {
+        const QJsonObject json;
+        moveObstacles(json);
         contadorAuxiliar++;
         contadorMovimientos = 0;
 
@@ -303,3 +323,4 @@ void Server::handleMoveSamuraiB() {
     contadorMovimientos++;
     sendToClient(clientSocket, response);
 }
+

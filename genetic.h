@@ -24,7 +24,7 @@ public:
 
     SamuraiB getSamuraiB();
 
-    solutions getSolutions();
+    //solutions getSolutions();
 
     void run();
 
