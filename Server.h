@@ -42,6 +42,7 @@ private:
     void printGameMatrix();
     bool samuraiBActive = false;
     void spawnSamuraiB();
+    void moveObstacles(const QJsonObject &json);
 
 };
 
