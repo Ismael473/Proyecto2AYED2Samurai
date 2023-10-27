@@ -30,8 +30,18 @@ SamuraiB Genetic::getSamuraiB() {
     return this->samuraiB;
 }
 
-void Genetic::elitism() {
+solutions Genetic::getSolutions() {
+    return this->solutions;
+}
 
+void Genetic::elitism() {
+    if (this->samuraiA.getResistencia() > getSolutions().solucionA.getResistencia()) {
+        this->solutions.solucionA = getSamuraiA();
+    }
+
+    if (this->samuraiB.getResistencia() > getSolutions().solucionB.getResistencia()) {
+        this->solutions.solucionB = getSamuraiB();
+    }
 }
 
 void Genetic::mutacion() {
@@ -111,5 +121,9 @@ void Genetic::crossover() {
 }
 
 void Genetic::run() {
+    elitism();
 
+    crossover();
+
+    mutacion();
 }

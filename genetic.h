@@ -18,11 +18,13 @@ public:
 
     void setSamuraiA(SamuraiA samuraiA);
 
-    SamuraiA getSamuraiA();
-
     void setSamuraiB(SamuraiB samuraiB);
 
+    SamuraiA getSamuraiA();
+
     SamuraiB getSamuraiB();
+
+    solutions getSolutions();
 
     void run();
 
@@ -32,6 +34,13 @@ private:
     SamuraiB samuraiB; //Objeto Samurai B
     int AptitudA; //Aptitud del samuraiA (resistencia)
     int AptitudB; //Aptitud del samuraiB (resistencia)
+
+    // Struct para guardar los mejores samurai
+    struct solutions {
+        SamuraiA solucionA;
+        SamuraiB solucionB;
+    };
+
 
     void elitism(); //Elitismo para decidir mejores generaciones
     void mutacion(); //Mutacion random del samurai
