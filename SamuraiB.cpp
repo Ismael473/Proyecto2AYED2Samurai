@@ -15,31 +15,31 @@ void SamuraiB::setPosition(int x, int y) {
     posY = y;
 }
 
-void SamuraiB::setEdad(int edad) {
+void SamuraiB::setEdad(float edad) {
     this->edad = edad;
 }
 
-void SamuraiB::setEmocional(int emocional) {
+void SamuraiB::setEmocional(float emocional) {
     this->emocional = emocional;
 }
 
-void SamuraiB::setFisica(int fisica) {
+void SamuraiB::setFisica(float fisica) {
     this->fisica = fisica;
 }
 
-void SamuraiB::setfSuperior(int fSuperior) {
+void SamuraiB::setfSuperior(float fSuperior) {
     this->fSuperior = fSuperior;
 }
 
-void SamuraiB::setfInferior(int fInferior) {
+void SamuraiB::setfInferior(float fInferior) {
     this->fInferior = fInferior;
 }
 
-void SamuraiB::setResistencia(int emocional, int fisica, int fSuperior, int fInferior, int edad) {
+void SamuraiB::setResistencia(float emocional, float fisica, float fSuperior, float fInferior, float edad) {
     this->resistencia = 5 + emocional + fisica + fSuperior + fInferior + ((-1/20) * edad + 2);
 }
 
-int SamuraiB::getResistencia() {
+float SamuraiB::getResistencia() {
     return this->resistencia;
 }
 

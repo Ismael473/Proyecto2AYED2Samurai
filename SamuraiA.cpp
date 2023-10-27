@@ -14,6 +14,54 @@ void SamuraiA::setPosition(int x, int y) {
     posY = y;
 }
 
+void SamuraiA::setEdad(float edad) {
+    this->edad = edad;
+}
+
+void SamuraiA::setEmocional(float emocional) {
+    this->emocional = emocional;
+}
+
+void SamuraiA::setFisica(float fisica) {
+    this->fisica = fisica;
+}
+
+void SamuraiA::setfSuperior(float fSuperior) {
+    this->fSuperior = fSuperior;
+}
+
+void SamuraiA::setfInferior(float fInferior) {
+    this->fInferior = fInferior;
+}
+
+void SamuraiA::setResistencia(float emocional, float fisica, float fSuperior, float fInferior, float edad) {
+    this->resistencia = 5 + emocional + fisica + fSuperior + fInferior + ((-1/20) * edad + 2);
+}
+
+float SamuraiA::getEdad() {
+    return this->edad;
+}
+
+float SamuraiA::getEmocional() {
+    return this->emocional;
+}
+
+float SamuraiA::getFisica() {
+    return this->fisica;
+}
+
+float SamuraiA::getfSuperior() {
+    return this->fSuperior;
+}
+
+float SamuraiA::getfInferior() {
+    return this->fInferior;
+}
+
+float SamuraiA::getResistencia() {
+    return this->resistencia;
+}
+
 std::pair<int, int> SamuraiA::move(const std::vector<std::vector<int>>& gameMatrix) {
     return aStarPathfinding(gameMatrix);
 }
@@ -29,13 +77,13 @@ int SamuraiA::y() const {
 void SamuraiA::reduceResistencia(int obstacleValue) {
     switch (obstacleValue) {
     case 5:
-        resistencia -= 1;
+        this->resistencia -= 1;
         break;
     case 6:
-        resistencia -= 2;
+        this->resistencia -= 2;
         break;
     case 7:
-        resistencia -= 4;
+        this->resistencia -= 4;
         break;
     }
     qDebug() << "Resistencia actual: " << resistencia;

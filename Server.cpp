@@ -238,15 +238,7 @@ void Server::printGameMatrix() {
 
 void Server::spawnSamuraiB() {
 
-    /**
-    samuraiB.setEdad();
-    samuraiB.setEmocional();
-    samuraiB.setFisica();
-    samuraiB.setfSuperior();
-    samuraiB.setfInferior();
-
-    samuraiB.setResistencia();
-    **/
+    genetic.setSamuraiB(this->samuraiB);
 
     samuraiB.setPosition(0, 0); // Establecer posición inicial para SamuraiB
     gameMatrix[0][0] = 8;  // Representamos a Samurai B con el valor 8

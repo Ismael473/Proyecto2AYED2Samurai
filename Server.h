@@ -7,6 +7,8 @@
 #include <QJsonObject>
 #include "SamuraiA.h"
 #include "SamuraiB.h"
+#include "genetic.h"
+
 class Server : public QTcpServer
 {
     Q_OBJECT
@@ -32,6 +34,7 @@ private:
     bool isValidPosition(int x, int y);
     SamuraiA samuraiA;
     SamuraiB samuraiB;
+    Genetic genetic;
     bool gameStarted;
     std::vector<std::vector<int>> gameMatrix; // Assume a 2D matrix for the game board
     QTcpSocket* clientSocket;
