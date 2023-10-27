@@ -33,7 +33,16 @@ Client::Client(const QString &hostName, int port, QWidget *parent)
     mainLayout->addLayout(gridLayout);
     verticalLayout->addLayout(mainLayout);
 
+    QTableWidget *tableWidget = new QTableWidget;
+    QGraphicsScene *GraficScen = new QGraphicsScene;
+    QGraphicsView *Lienso = new QGraphicsView;
+
+
+    samurai_stats_viewer *samuraiStats = new samurai_stats_viewer(this);
+    samuraiStats->setTableWidget(tableWidget,GraficScen,Lienso,verticalLayout);
+
     setLayout(verticalLayout);
+    samuraiStats->setNinjaStats("samurai.ID","samurai.edad","Prueba3","Prueba","Prueba","Prueba","Prueba","Prueba","Prueba");
 
     // Configuración del QTimer para mover el samurai
     moveTimer = new QTimer(this);
